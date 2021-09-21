@@ -1,0 +1,20 @@
+###NNAR model
+
+n=nnetar(p_train_norm,p=10,size=20,maxit=100,scale_inputs = FALSE)  /*p= Delay input , size = neural hidden*/
+fitted.nnar.train=denormalize(fitted(n))
+fitted.nnar.train
+   
+###NNAR-ARIMA model
+  
+res.fitted.nnar.train=p_train-fitted.nnar.train
+fit.NNAR.ARIMA <- arima(res.fitted.nnar.train[11:117], 
+                  order=c(2,1,4),method="ML")
+fit.NNAR.ARIMA 
+hybrid.fit.train=fitted.nnar.train[11:117]+fitted.res.train
+    
+####Forecast 
+
+forecast.arima=forecast(fit.NNAR.ARIMA,h=29)
+forecast.arima
+summary(forecast.arima)
+fc.hybrid=as.vector(forecast.arima$mean)+as.vector(fc)
